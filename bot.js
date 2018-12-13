@@ -124,8 +124,35 @@ client.on('message', message => {
  message.channel.sendEmbed(cat);
      }
  });
-
-
+//open. off
+client.on('message', message => {
+ 
+ 
+if (message.content === prefix + "lock") {
+if(!message.channel.guild) return message.reply(':no_entry: | This Command For Servers Only!');
+        if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(':no_entry: | You dont have **MANAGE_MESSAGES** Permission!');
+        if(!message.guild.member(client.user).hasPermission('MANAGE_MESSAGES')) return message.channel.send(':no_entry: | I dont have **MANAGE_MESSAGES** Permission!');
+           message.channel.overwritePermissions(message.guild.id, {
+         READ_MESSAGES: false
+ 
+           }).then(() => {
+               message.reply("Channel Locked ✅ ")
+           });
+}
+  if (message.content === prefix + "un") {
+if(!message.channel.guild) return message.reply(':no_entry: | This Command For Servers Only!');
+        if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(':no_entry: | You dont have **MANAGE_MESSAGES** Permission!');
+        if(!message.guild.member(client.user).hasPermission('MANAGE_MESSAGES')) return message.channel.send(':no_entry: | I dont have **MANAGE_MESSAGES** Permission!');
+           message.channel.overwritePermissions(message.guild.id, {
+         READ_MESSAGES: true
+ 
+           }).then(() => {
+               message.reply("Channel UnLocked ✅ ")
+           });
+}
+ 
+ 
+});
 
 
 
