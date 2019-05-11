@@ -191,29 +191,62 @@ client.on('message',async message => {
 });
 
     
+//ترجمة
+const translate = require('google-translate-api');
+const Langs = ['afrikaans', 'albanian', 'amharic', 'arabic', 'armenian', 'azerbaijani', 'bangla', 'basque', 'belarusian', 'bengali', 'bosnian', 'bulgarian', 'burmese', 'catalan', 'cebuano', 'chichewa', 'chinese simplified', 'chinese traditional', 'corsican', 'croatian', 'czech', 'danish', 'dutch', 'english', 'esperanto', 'estonian', 'filipino', 'finnish', 'french', 'frisian', 'galician', 'georgian', 'german', 'greek', 'gujarati', 'haitian creole', 'hausa', 'hawaiian', 'hebrew', 'hindi', 'hmong', 'hungarian', 'icelandic', 'igbo', 'indonesian', 'irish', 'italian', 'japanese', 'javanese', 'kannada', 'kazakh', 'khmer', 'korean', 'kurdish (kurmanji)', 'kyrgyz', 'lao', 'latin', 'latvian', 'lithuanian', 'luxembourgish', 'macedonian', 'malagasy', 'malay', 'malayalam', 'maltese', 'maori', 'marathi', 'mongolian', 'myanmar (burmese)', 'nepali', 'norwegian', 'nyanja', 'pashto', 'persian', 'polish', 'portugese', 'punjabi', 'romanian', 'russian', 'samoan', 'scottish gaelic', 'serbian', 'sesotho', 'shona', 'sindhi', 'sinhala', 'slovak', 'slovenian', 'somali', 'spanish', 'sundanese', 'swahili', 'swedish', 'tajik', 'tamil', 'telugu', 'thai', 'turkish', 'ukrainian', 'urdu', 'uzbek', 'vietnamese', 'welsh', 'xhosa', 'yiddish', 'yoruba', 'zulu'];
+
+client.on('message', message => {
+if (message.content.startsWith(prefix + 'tran')) {
+    let args = message.content.split(" ").slice(1);
+    if (!args[0]) {
+    
+        const embed = new Discord.RichEmbed()
+            .setColor("FFFFFF")
+        .setDescription("**ترجمة الكتابة.**\استعمل: `+translate <الكمة لتبي> <االغة>`");
+
+        return message.channel.send(embed);
+
+    } else {
+
+        if (args.length === undefined) {
+
+            return message.channel.send("**ترجمة الكتابة.**\استعمل: `+translate <الكمة لتبي> <االغة>`");
+
+        } else {
+
+            let transArg = args[0].toLowerCase();
+
+            args = args.join(' ').slice(1)
+            let translation;
+
+            if (!Langs.includes(transArg)) return message.channel.send(`**Language not found.**`);
+            args = args.slice(transArg.length);
+
+            translate(args, {
+                to: transArg
+            }).then(res => {
+
+                const embed = new Discord.RichEmbed()
+                    .setAuthor("Translator", 'https://media.discordapp.net/attachments/463513640566390801/463525969534386176/rotate_right.png?width=473&height=473')
+                    .addField(`إدخال/Input`, `\`\`\`${args}\`\`\``)
+                    .setColor("#42f4c8")
+                   .setFooter(`SN bot `,"https://cdn.discordapp.com/attachments/448412582055903232/463505714929991691/f.jpg")
+                .addField(`اخراج/Output`, `\`\`\`${res.text}\`\`\``);
+              
+             
+                return message.channel.send(embed);
+            });
+        }
+    }
+}
+});
+
+    
 
 
-    y: '🇾', z: '🇿', 0: '0⃣', 1: '1⃣',
 
-    2: '2⃣', 3: '3⃣', 4: '4⃣', 5: '5⃣',
 
-    6: '6⃣', 7: '7⃣', 8: '8⃣', 9: '9⃣',
 
-    10: '🔟', '#': '#⃣', '*': '*⃣',
-
-    '!': '❗', '?': '❓',
-
-};
-
-client.on('message', msg => {
-
-if (msg.author.bot) return;
-
-let content = msg.content.split('').map(letter => emojiChars[letter]).join(' ');
-
-return msg.channel.send(`${content ? content : 'Failed to emojify'}`);
-
-})
 
 
 
